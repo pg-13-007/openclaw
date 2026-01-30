@@ -40,6 +40,7 @@ const PREFERRED_PROVIDER_BY_AUTH_CHOICE: Partial<Record<AuthChoice, string>> = {
   minimax: "lmstudio",
   "opencode-zen": "opencode",
   "xai-api-key": "xai",
+  "azure-openai-api-key": "azure-openai",
   "litellm-api-key": "litellm",
   "qwen-portal": "qwen-portal",
   "volcengine-api-key": "volcengine",

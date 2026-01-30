@@ -82,6 +82,9 @@ export function registerOnboardCommand(program: Command) {
   }
 
   command
+    .option("--azure-openai-api-key <key>", "Azure OpenAI API key")
+    .option("--azure-openai-resource-name <name>", "Azure OpenAI resource name")
+    .option("--azure-openai-deployment-name <name>", "Azure OpenAI deployment name")
     .option("--custom-base-url <url>", "Custom provider base URL")
     .option("--custom-api-key <key>", "Custom provider API key (optional)")
     .option("--custom-model-id <id>", "Custom provider model ID")
