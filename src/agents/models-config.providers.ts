@@ -13,6 +13,11 @@ import {
   KILOCODE_MODEL_CATALOG,
 } from "../providers/kilocode-shared.js";
 import { ensureAuthProfileStore, listProfilesForProvider } from "./auth-profiles.js";
+import {
+  buildAzureOpenAIProvider,
+  resolveAzureOpenAIConfigFromEnv,
+  AZURE_OPENAI_ENV,
+} from "./azure-openai-provider.js";
 import { discoverBedrockModels } from "./bedrock-discovery.js";
 import {
   buildBytePlusModelDefinition,
@@ -957,29 +962,6 @@ export async function resolveImplicitProviders(params: {
       ...hfProvider,
       apiKey: huggingfaceKey,
     };
-  }
-  // Azure OpenAI provider - auto-discover from environment variables
-  const azureOpenAIConfig = resolveAzureOpenAIConfigFromEnv();
-  if (azureOpenAIConfig) {
-    providers["azure-openai"] = buildAzureOpenAIProvider(azureOpenAIConfig);
-  } else {
-    // Check for API key in auth profiles
-    const azureOpenAIKey =
-      resolveEnvApiKeyVarName("azure-openai") ??
-      resolveApiKeyFromProfiles({ provider: "azure-openai", store: authStore });
-    if (azureOpenAIKey) {
-      // If we have an API key but not full config, check for resource/deployment in env
-      const resourceName = process.env[AZURE_OPENAI_ENV.RESOURCE_NAME]?.trim();
-      const deploymentName = process.env[AZURE_OPENAI_ENV.DEPLOYMENT_NAME]?.trim();
-      if (resourceName && deploymentName) {
-        providers["azure-openai"] = buildAzureOpenAIProvider({
-          resourceName,
-          deploymentName,
-          apiKey: azureOpenAIKey,
-          apiVersion: process.env[AZURE_OPENAI_ENV.API_VERSION]?.trim(),
-        });
-      }
-    }
   }
 
   const qianfanKey =
